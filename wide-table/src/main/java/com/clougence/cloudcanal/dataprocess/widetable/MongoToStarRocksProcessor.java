@@ -47,18 +47,20 @@ public class MongoToStarRocksProcessor implements CloudCanalProcessorV2 {
 //            String[] columns = customerIdStr.split(",");
             JSONObject targetJsonOjb = JSON.parseObject(customerIdStr);
 
-            for (String columnKey: targetJsonOjb.keySet()) {
-                String keyStr = "customerId_" + columnKey;
-                JSONObject newObj = new JSONObject();
-                newObj.put("sqlType",12);
-                newObj.put("fieldName", keyStr);
-                newObj.put("value", targetJsonOjb.get(columnKey));
-                newObj.put("null",false);
-                newObj.put("dbType","varchar(255)");
-                newObj.put("updated",false);
-                newObj.put("key",false);
+            if (targetJsonOjb != null) {
+                for (String columnKey : targetJsonOjb.keySet()) {
+                    String keyStr = "customerId_" + columnKey;
+                    JSONObject newObj = new JSONObject();
+                    newObj.put("sqlType", 12);
+                    newObj.put("fieldName", keyStr);
+                    newObj.put("value", targetJsonOjb.get(columnKey));
+                    newObj.put("null", false);
+                    newObj.put("dbType", "varchar(255)");
+                    newObj.put("updated", false);
+                    newObj.put("key", false);
 
-                jsonOjb.getJSONArray("records").getJSONObject(0).getJSONObject("afterColumnMap").put(keyStr, newObj);
+                    jsonOjb.getJSONArray("records").getJSONObject(0).getJSONObject("afterColumnMap").put(keyStr, newObj);
+                }
             }
 
             JSONObject dataInTime = new JSONObject();
